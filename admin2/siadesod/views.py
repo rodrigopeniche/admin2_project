@@ -13,12 +13,16 @@ def all_patients(request):
     return HttpResponse(response)
 
 def add_patient(request, data):
-    patient = Patient(data[0], data[1], data[2],  data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15])
+    patient = Patient(data[['user_id ']], data['password'], data['first_name'],  data['last_name'], data['email'], data['date_of_birth'], data['phone'], data['address'], data['gender'], data['Type'], data['admin'], data['curp'], data['insurance'], data['allergies'])
     patient.save()
     return HttpResponse(patient)
 
-def update_patient(request, user_id, fields):
-    #Patient.objects.filter(pk=user_id).update(field1='some value')
+def update_patient(request, data):
+    for key in data:
+        patient = Patient.objects.get(data['user_id'])
+        patient[key] = data[key]
+        patient.save()
+
     return HttpResponse('Update patient goes here')
 
 def delete_patient(request, user_id):
@@ -30,12 +34,15 @@ def all_dentists(request):
     return HttpResponse(response)
 
 def add_dentist(request, data):
-    dentist = Patient(data[0], data[1], data[2],  data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15])
+    dentist = Dentist(data[['user_id ']], data['password'], data['first_name'],  data['last_name'], data['email'], data['date_of_birth'], data['phone'], data['address'], data['gender'], data['Type'], data['admin'], data['rate'], data['cedula'], data['specialty'])
     dentist.save()
     return HttpResponse(dentist)
 
-def update_dentist(request, user_id, fields):
-    # pending
+def update_dentist(request, data):
+    for key in data:
+        dentist = Dentist.objects.get(data['user_id'])
+        dentist[key] = data[key]
+        dentist.save()
     return HttpResponse('Update Dentist goes here')
 
 def delete_dentist(request, user_id):
@@ -47,12 +54,15 @@ def all_staff(request):
     return HttpResponse(response)
 
 def add_staff(request, data):
-    staff = Patient(data[0], data[1], data[2],  data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14])
+    staff = Staff(data[['user_id ']], data['password'], data['first_name'],  data['last_name'], data['email'], data['date_of_birth'], data['phone'], data['address'], data['gender'], data['Type'], data['admin'], data['salary'], data['staff_type'])
     staff.save()
     return HttpResponse(staff)
 
-def update_staff(request):
-    #pending
+def update_staff(request, data):
+    for key in data:
+        staff = Staff.objects.get(data['user_id'])
+        staff[key] = data[key]
+        staff.save()
     return HttpResponse('Update Dentist goes here')
 
 def delete_staff(request, user_id):
@@ -64,11 +74,15 @@ def all_appointments(request):
     return HttpResponse(response)
 
 def add_appointment(request, data):
-    appointment = Appointment(data[0], data[1], data[2], data[3], data[4], data[5])
+    appointment = Appointment(data['appointment_id'], data['patient'], data['dentist'], data['date'], data['status'], data['description'])
     appointment.save()
     return HttpResponse('Create appointment goes here')
 
-def update_appointment(request):
+def update_appointment(request, data):
+    for key in data:
+        appointment = Appointment.objects.get(data['user_id'])
+        appointment[key] = data[key]
+        appointment.save()
     return HttpResponse('Create appointment goes here')
 
 def delete_appointment(request, appointment_id):
@@ -80,13 +94,17 @@ def all_treatments(request):
     return HttpResponse(response)
 
 def add_treatment(request, data):
-    appointment = Appointment(data[0], data[1], data[2], data[3], data[4], data[5], data[6])
+    appointment = Appointment(data['treatment_id'], data['appointment'], data['start_date'], data['end_date'], data['diagnostic'], data['medicine'], data['observations'])
     appointment.save()
     return HttpResponse('Create appointment goes here')
 
-def update_treatment(request):
+def update_treatment(request, data):
+    for key in data:
+        treatment = Treatment.objects.get(data['user_id'])
+        treatment[key] = data[key]
+        treatment.save()
     return HttpResponse('Update treatment')
 
-def delete_treatment(request):
-    Treatment.objects.filter(pk=appointment_id).delete()
+def delete_treatment(request, treatment_id):
+    Treatment.objects.filter(pk=treatment_id).delete()
     return HttpResponse('Deleted successfully')

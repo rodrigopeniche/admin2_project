@@ -3,5 +3,7 @@
 To run:
 
 1.- Open command line  <br/>
-1.- cd /path/to/project  <br/>
-2.- python manage.py runserver
+2.- cd /path/to/project  <br/>
+3.- python manage.py makemigrations <br/>
+4.- python manage.py migrate <br/>
+5.- python manage.py runserver

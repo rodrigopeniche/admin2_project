@@ -2,5 +2,5 @@
 
 To run:
 
-1.- cd /path/to/project
+1.- cd /path/to/project \n
 2.- python manage.py runserver

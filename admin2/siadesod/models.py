@@ -5,37 +5,22 @@ import json
 
 class User(models.Model):
     user_id = models.IntegerField(primary_key=True)
-    password = models.CharField(max_length =16)
     first_name = models.CharField(max_length=45)
     last_name = models.CharField(max_length=45)
     email = models.CharField(max_length=45, unique=True)
-    date_of_birth = models.DateField
+    date_of_birth = models.DateField(null=True)
     phone = models.CharField(max_length=22)
     address = models.CharField(max_length=150)
 
     class Meta:
         abstract = True
     
-    GENDER_CHOICE = (
-    ('M', 'Male'),
-    ('F', 'Female'),
-    )
-
-    gender = models.CharField(max_length=1, choices = GENDER_CHOICE)
-
-    TYPE_CHOICE = (
-    ('P', 'Patient'),
-    ('D', 'Dentist'),
-    ('S', 'Staff'),
-    )
-
-    Type = models.CharField(max_length = 1, choices = TYPE_CHOICE)
     admin = models.BooleanField(default = False)
 
 class Staff(User):
     #staff = models.OneToOneField(User, on_delete=models.DO_NOTHING, parent_link=True)
     #staff_id = models.ForeignKey(User, on_delete='DO_NOTHING', on_update='DO_NOTHING', unique=True)
-    salary = models.IntegerField
+    salary = models.IntegerField(default=0)
 
     TYPE_CHOICE = (
     ('A', 'Administrative'),
@@ -59,28 +44,28 @@ class Patient(User):
     insurance = models.CharField(max_length = 45)
     allergies = models.CharField(max_length = 200)
 
-    def toJSON(self):
+    '''def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__, 
             sort_keys=True, indent=4)
 
     def __str__(self):
-        return self.toJSON()
+        return self.toJSON()'''
         #return str(self.user_id) + ", " + self.first_name + ", " + self.last_name + ", " + self.email + ", " + str(self.date_of_birth) + ", " + self.phone + ", " + self.address + ", " + self.curp + ", " + self.insurance + ", " + self.allergies
 
 
 class Dentist(User):
     #dentist = models.OneToOneField(User, on_delete=models.DO_NOTHING, parent_link=True)
     #dentist_id = models.ForeignKey(User, on_delete='DO_NOTHING', on_update='DO_NOTHING', unique=True)
-    rate = models.IntegerField
+    hourly_rate = models.IntegerField(default=0)
     cedula = models.CharField(max_length = 45, unique=True)
     specialty = models.CharField(max_length = 45)
 
-    def toJSON(self):
+    '''def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__, 
             sort_keys=True, indent=4)
 
     def __str__(self):
-        return self.toJSON()
+        return self.toJSON()'''
         #return str(self.user_id) + ", " + self.first_name + ", " + self.last_name + ", " + self.email + ", " + str(self.date_of_birth) + ", " + self.phone + ", " + self.address + ", " + str(self.rate) + ", " + self.cedula + ", " + self.specialty
 
     
@@ -90,7 +75,7 @@ class Appointment(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.DO_NOTHING)
     dentist = models.ForeignKey(Dentist, on_delete=models.DO_NOTHING)
 
-    date = models.DateField
+    date = models.DateField(null=True)
 
     STATUS_CHOICE = (
     ('P', 'Pending'),
@@ -112,8 +97,8 @@ class Appointment(models.Model):
 class Treatment(models.Model):
     treatment_id = models.IntegerField(primary_key=True)
     appointment = models.ForeignKey(Appointment, on_delete=models.DO_NOTHING)
-    start_date = models.DateField
-    end_date = models.DateField
+    start_date = models.DateField(null=True)
+    end_date = models.DateField(null=True)
     diagnostic = models.CharField(max_length = 100, default = 'Ninguno')
     medicine = models.CharField(max_length = 45, default = 'Ninguno')
     observations = models.CharField(max_length = 100)

@@ -110,6 +110,7 @@ def all_staff(request):
                 phone = request.POST.get('phone')
                 salary = request.POST.get('salary')
                 staff_type = request.POST.get('staff_type')
+                print(staff_type)
 
                 try:
                     latest_staff = Staff.objects.latest('user_id')

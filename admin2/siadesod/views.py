@@ -164,6 +164,16 @@ def all_appointments(request):
         
         if 'delete' in request.POST:
             Appointment.objects.filter(pk=int(request.POST.get('delete'))).delete()
+        
+        if 'cancel' in request.POST:
+            appointment = Appointment.objects.get(pk=request.POST.get('cancel'))
+            appointment.status = 'C'
+            appointment.save()
+        
+        if 'done' in request.POST:
+            appointment = Appointment.objects.get(pk=request.POST.get('done'))
+            appointment.status = 'D'
+            appointment.save()
 
     appointments_list = Appointment.objects.all()
     template = loader.get_template('appointments.html')
